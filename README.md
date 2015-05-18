@@ -10,7 +10,7 @@ It's on Maven Central
     <dependency>
       <groupId>de.scravy</groupId>
 	  <artifactId>either</artifactId>
-	  <version>1.0.0-SNAPSHOT</version>
+	  <version>1.0.0</version>
     </dependency>
 
 It's easy
