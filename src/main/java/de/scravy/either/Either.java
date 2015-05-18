@@ -4,24 +4,30 @@ import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 /**
- * 
+ * The <code>Either</code> type (an explicit sum type for Java).
+ *
  * @since 1.0.0
- * 
+ *
  * @author Julian Fleischer
  *
  * @param <L>
+ *          The left type.
  * @param <R>
+ *          The right type.
  */
 public abstract class Either<L, R> {
 
   /**
-   * 
+   * The <code>Left</code> type.
+   *
    * @since 1.0.0
-   * 
+   *
    * @author Julian Fleischer
    *
    * @param <L>
+   *          The left type.
    * @param <R>
+   *          The right type.
    */
   @Value
   @EqualsAndHashCode(callSuper = false)
@@ -33,30 +39,37 @@ public abstract class Either<L, R> {
     public boolean isLeft() {
       return true;
     }
-
   }
 
   /**
-   * 
+   * Creates a left value.
+   *
    * @since 1.0.0
-   * 
-   * @author Julian Fleischer
-   * 
+   *
    * @param value
-   * @return
+   *          The value to encapsulate as left.
+   * @return An either value!
+   *
+   * @param <L>
+   *          The left type.
+   * @param <R>
+   *          The right type.
    */
-  public static <A, B> Either<A, B> left(final A value) {
-    return new Left<A, B>(value);
+  public static <L, R> Either<L, R> left(final L value) {
+    return new Left<L, R>(value);
   }
 
   /**
-   * 
+   * The <code>Right</code> type.
+   *
    * @since 1.0.0
-   * 
+   *
    * @author Julian Fleischer
    *
    * @param <L>
+   *          The left type.
    * @param <R>
+   *          The right type.
    */
   @Value
   @EqualsAndHashCode(callSuper = false)
@@ -72,14 +85,21 @@ public abstract class Either<L, R> {
   }
 
   /**
-   * 
+   * Creates a right value.
+   *
    * @since 1.0.0
-   * 
+   *
    * @param value
-   * @return
+   *          The value to encapsulate as left.
+   * @return An either value!
+   *
+   * @param <L>
+   *          The left type.
+   * @param <R>
+   *          The right type.
    */
-  public static <A, B> Either<A, B> right(final B value) {
-    return new Right<A, B>(value);
+  public static <L, R> Either<L, R> right(final R value) {
+    return new Right<L, R>(value);
   }
 
   private Either() {
@@ -87,40 +107,50 @@ public abstract class Either<L, R> {
   }
 
   /**
-   * 
+   * Checks whether this <code>Either</code> is a left value.
+   *
    * @since 1.0.0
-   * 
-   * @return
+   *
+   * @return Whether this is a Left value or not.
    */
   public boolean isLeft() {
     return false;
   }
 
   /**
-   * 
+   * Checks whether this <code>Either</code> is a right value.
+   *
    * @since 1.0.0
-   * 
-   * @return
+   *
+   * @return Whether this is a Right value or not.
    */
   public boolean isRight() {
     return false;
   }
 
   /**
-   * 
+   * Returns the left value (if this is a left value).
+   *
    * @since 1.0.0
-   * 
-   * @return
+   *
+   * @return The unwrapped left value.
+   *
+   * @throws UnsupportedOperationException
+   *           if this is not actually a {@link Left}.
    */
   public L getLeft() {
     throw new UnsupportedOperationException();
   }
 
   /**
-   * 
+   * Returns the right value (if this is a right value).
+   *
    * @since 1.0.0
-   * 
-   * @return
+   *
+   * @return The unwrapped right value.
+   *
+   * @throws UnsupportedOperationException
+   *           if this is not actually a {@link Right}.
    */
   public R getRight() {
     throw new UnsupportedOperationException();
