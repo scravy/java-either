@@ -39,6 +39,11 @@ public abstract class Either<L, R> {
     public boolean isLeft() {
       return true;
     }
+    
+    @Override
+    public L getLeft() {
+      return left;
+    }
   }
 
   /**
@@ -91,10 +96,14 @@ public abstract class Either<L, R> {
     private final R right;
 
     @Override
-    public boolean isLeft() {
+    public boolean isRight() {
       return true;
     }
 
+    @Override
+    public R getRight() {
+      return right;
+    }
   }
 
   /**
