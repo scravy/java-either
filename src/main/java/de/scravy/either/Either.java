@@ -39,10 +39,10 @@ public abstract class Either<L, R> {
     public boolean isLeft() {
       return true;
     }
-    
+
     @Override
     public L getLeft() {
-      return left;
+      return this.left;
     }
   }
 
@@ -63,14 +63,16 @@ public abstract class Either<L, R> {
   public static <L, R> Either<L, R> left(final L value) {
     return new Left<L, R>(value);
   }
-  
+
   /**
    * Creates a left value.
-   * 
+   *
    * @since 1.1.0
-   * 
-   * @param value The value to encapsulate as left.
-   * @param rightType The right type (to aid in type inference)
+   *
+   * @param value
+   *          The value to encapsulate as left.
+   * @param rightType
+   *          The right type (to aid in type inference)
    * @return An either value!
    */
   public static <L, R> Either<L, R> left(final L value, final Class<R> rightType) {
@@ -102,7 +104,7 @@ public abstract class Either<L, R> {
 
     @Override
     public R getRight() {
-      return right;
+      return this.right;
     }
   }
 
@@ -126,16 +128,19 @@ public abstract class Either<L, R> {
 
   /**
    * Creates a right value.
-   * 
+   *
    * @since 1.1.0
-   * 
-   * @param value The value to encapsulate as right.
-   * @param rightType The right type (to aid in type inference)
+   *
+   * @param value
+   *          The value to encapsulate as right.
+   * @param leftType
+   *          The right type (to aid in type inference)
    * @return An either value!
    */
   public static <L, R> Either<L, R> right(final R value, final Class<L> leftType) {
     return new Right<L, R>(value);
   }
+
   private Either() {
 
   }
