@@ -53,4 +53,5 @@ public class Eithers {
     partitionInto(source, result.getFirst(), result.getSecond());
     return result;
   }
+
 }

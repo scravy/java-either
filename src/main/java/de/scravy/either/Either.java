@@ -194,4 +194,125 @@ public abstract class Either<L, R> {
   public R getRight() {
     throw new UnsupportedOperationException();
   }
+
+  /**
+   * Chains this either to a functions that accepts its right argument and
+   * returns an Either.
+   *
+   * If this either is a left value, the function will not be invoked but an
+   * either with that left value will be returned.
+   *
+   * @since 1.2.0
+   * @param f
+   *          A function taking a value of the right type, producing an Either
+   *          value.
+   * @return A new Either value which contains the result of the application of
+   *         f with the right value or an Either value with the same left value
+   *         as this if this was a left.
+   */
+  @SuppressWarnings("unchecked")
+  public final <R2> Either<L, R2> bind(final EitherFunction<L, R, R2> f) {
+    if (isLeft()) {
+      return (Either<L, R2>) this;
+    }
+    return f.apply(getRight());
+  }
+
+  /**
+   * Chains this either to a function that accepts its rights argument and an
+   * additional argument and returns an Either.
+   *
+   * @since 1.2.0
+   * @param f
+   *          A function taking a value of the right type and an additional
+   *          value of an arbitrary type, producing an Either value.
+   * @param value
+   *          An additional value which will be supplied as seconds argument to
+   *          the function.
+   * @return A new Either value which contains the result of the application of
+   *         f with the right value and the additionally supplied value or an
+   *         Either value with the same left value as this if this was a left.
+   */
+  @SuppressWarnings("unchecked")
+  public final <R2, B> Either<L, R2> bind(
+      final EitherBiFunction<L, R, B, R2> f, final B value) {
+    if (isLeft()) {
+      return (Either<L, R2>) this;
+    }
+    return f.apply(getRight(), value);
+  }
+
+  /**
+   * Chains this either to an ordinary function.
+   *
+   * The supplied function is invoked with this Eithers right value iff it is a
+   * right value or not at all if it is a left value.
+   *
+   * <pre>
+   * Either.right(3).chainOrdinary(a -&gt; a + 1); // Right(4)
+   * </pre>
+   *
+   * <pre>
+   * Either.left(3).chainOrdinary(a -&gt; a + 1); // Left(3)
+   * </pre>
+   *
+   * @since 1.2.0
+   * @param f
+   *          An ordinary function, accepting a value of the right type and
+   *          producing a new value.
+   * @return A new Right Either if this was a right value, containing the result
+   *         of the application of f, or a Left Either with the Left value of
+   *         this Either.
+   */
+  @SuppressWarnings("unchecked")
+  public final <R2> Either<L, R2> map(
+      final Function<R, R2> f) {
+    if (isLeft()) {
+      return (Either<L, R2>) this;
+    }
+    return Either.right(f.apply(getRight()));
+  }
+
+  /**
+   * Chains this either to an ordinary function.
+   *
+   * The supplied function is invoked with this Eithers right value and the
+   * given additional value iff it is a right value or not at all if it is a
+   * left value.
+   *
+   * @since 1.2.0
+   * @param f
+   *          An ordinary function, accepting a value of the right type and an
+   *          additional value, and producing a new value.
+   * @param value
+   *          An additional value of arbitrary type.
+   * @return A new Right Either if this was a right value, containing the result
+   *         of the application of f, or a Left Either with the Left value of
+   *         this Either.
+   */
+  @SuppressWarnings("unchecked")
+  public final <B, R2> Either<L, R2> map(
+      final BiFunction<R, B, R2> f, final B value) {
+    if (isLeft()) {
+      return (Either<L, R2>) this;
+    }
+    return Either.right(f.apply(getRight(), value));
+  }
+
+  /**
+   * Consumes this Either.
+   *
+   * @since 1.2.0
+   * @param leftConsumer
+   * @param rightConsumer
+   */
+  public final void consume(
+      final EitherConsumer<L> leftConsumer,
+      final EitherConsumer<R> rightConsumer) {
+    if (isLeft()) {
+      leftConsumer.consume(getLeft());
+    } else {
+      rightConsumer.consume(getRight());
+    }
+  }
 }
