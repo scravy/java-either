@@ -315,4 +315,22 @@ public abstract class Either<L, R> {
       rightConsumer.consume(getRight());
     }
   }
+
+  /**
+   * Fold the either with functions handling the Left and the Right case.
+   *
+   * @since 1.3.0
+   * @param left
+   *          Function handling the left case.
+   * @param right
+   *          Function handling the right case.
+   * @return The result of the left function if this was a left or the right
+   *         function if this was a right.
+   */
+  public <X> X fold(final Function<L, X> left, final Function<R, X> right) {
+    if (isLeft()) {
+      return left.apply(getLeft());
+    }
+    return right.apply(getRight());
+  }
 }
